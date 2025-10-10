@@ -1,22 +1,54 @@
-# LaTeX intermediate and output files
+# LaTeX intermediate files
 *.aux
+*.lof
+*.log
+*.lot
+*.fls
+*.out
+*.toc
+*.fmt
+*.fot
+*.cb
+*.cb2
+*.run.xml
+
+# Editor backup files
+*~
+*.swp
+*.bak
+*.backup
+*.tmp
+*.temp
+
+# Intermediate files
+*.dvi
+*.ps
+*.pdf
+*.synctex.gz
 *.bbl
 *.blg
+*.bcf
 *.brf
 *.idx
 *.ilg
 *.ind
 *.lof
-*.log
 *.lot
+*.maf
+*.mtc
+*.mtc0
+*.nav
+*.nlo
 *.out
-*.toc
-*.acn
-*.acr
-*.alg
-*.glg
-*.glo
-*.gls
-*.fls
+*.snm
+*.tdo
+*.vrb
 *.fdb_latexmk
-*.synctex.gz
+*.fls
+
+# Build directories
+_build/
+_texbuild/
+
+# Exclude macOS system files
+.DS_Store
