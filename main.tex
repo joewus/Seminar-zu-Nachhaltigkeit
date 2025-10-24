@@ -128,8 +128,82 @@ and water conservation.
 Through a text-driven analysis of current research, case studies, and expert insights, this work evaluates how these 
 robust and adaptive AI systems can significantly enhance urban resilience and outlines the necessary social, economic, 
 and technical conditions for their sustainable implementation.
-\section{Materials and Methods}
-\lipsum[4-5]  % Subsection with more details
+\section{Machine Learning Models}
+Building on the theoretical foundation of Artificial Intelligence (AI) described in Section 2.2, this chapter focuses on 
+the practical methods and algorithms that enable the implementation of AI in climate-resilient urban systems.
+In particular, the emphasis lies on Machine Learning (ML) techniques, which empower predictive and adaptive decision-making 
+in Smart Cities. ML provides the computational foundation for analyzing large volumes of climate, environmental, and sensor 
+data, and for dynamically optimizing infrastructure responses such as drainage control, energy distribution, and water management.
+
+Although the terms Artificial Intelligence and Machine Learning are often used interchangeably, they refer to distinct concepts. 
+Artificial Intelligence is the overarching discipline that aims to simulate human cognitive functions such as reasoning, learning, 
+and decision-making. Machine Learning, by contrast, is a subset of AI that enables systems to automatically learn from data and 
+improve their performance without being explicitly programmed for each task.
+While traditional AI systems rely on rule-based logic — a series of explicit if-then-else statements designed by human 
+programmers — ML systems infer these decision rules autonomously by identifying statistical patterns within large datasets.
+
+In the context of Smart Cities and climate resilience, ML algorithms enable data-driven adaptation, allowing infrastructure 
+systems to react intelligently to dynamic environmental conditions. Depending on the nature of the learning problem, 
+ML approaches are generally grouped into three categories:
+\begin{enumerate}
+    \item Supervised learning -- models learn from labeled datasets (e.g., historical temperature and rainfall data) to 
+    predict future values or classify events such as heatwaves or flooding risks.
+    \item Unsupervised learning -- algorithms discover hidden structures in unlabeled data, for example clustering 
+    urban areas by micro-climate patterns or detecting anomalies in sensor networks.
+    \item Reinforcement Learning (RL) -- agents learn by interacting with the environment and receiving 
+    feedback (rewards or penalties); RL can be applied to optimize adaptive control systems such as real-time 
+    drainage management or smart grid operations.
+\end{enumerate}
+\subsection{Mathematical and Engineering Foundations of Machine Learning}
+In this section we will start by discussing pattern recognition, this has been a key role in enginering and today its used the most in data-science. 
+It involves identifying regularities and structures in data and its an important technique when the goal is to classify input data into predefined categories based on similar features.
+Multivariable calculus, linear algebra, probability theory, and statistics form the mathematical backbone of machine learning algorithms.\cite{bishop2006pattern}
+We will use a very handy example here taken from this book \cite{bishop2006pattern} to illustrate how these mathematical concepts are applied in machine learning.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/Machine_learning_pixel.png}
+    \caption{Analogy between pattern recognition in handwritten digits and climate-resilience modelling. Adapted from \cite{bishop2006pattern}}
+    \label{fig:ml_example}
+\end{figure}
+
+
+The challenge of discovering patterns in data has been fundamental to scientific progress for centuries. 
+Early examples include how Tycho Brahe’s astronomical observations enabled Kepler to derive the laws of planetary motion, 
+laying the foundation for classical mechanics, or how patterns in atomic spectra helped establish quantum theory.
+
+In a modern context, the field of pattern recognition focuses on how computer systems can automatically detect regularities 
+within data and use these patterns to perform tasks such as classification or prediction. A common example is the recognition 
+of handwritten digits (as shown in Figure 3.x), where each image of a digit can be represented as a 28×28 grid of pixel 
+intensities — forming a 784-dimensional input vector.
+
+The goal of the model is to map each input vector $x$ to its correct category, corresponding to one of the digits 0–9 (see Figure~\ref{fig:ml_example}). Rather than relying on handcrafted rules that describe the shapes of digits — which would be extremely complex and error-prone — machine learning methods instead learn these distinctions automatically from data.
+
+In this process, a training set of $N$ labeled examples $\{x_1, \dots, x_N\}$ is used to adjust the parameters of an adaptive model so that its predictions $y(x)$ approximate the true target labels $t$. Once trained, the model can correctly classify new, unseen images (the test set), demonstrating its ability to generalize beyond the data it was trained on — a key property of successful learning systems (Bishop, 2006).
+
+\subsection{Linking Machine Learning to Climate-Resilient Urban Systems}
+
+In the same way that a model can learn to recognize patterns in handwritten digits \cite{bishop2006pattern}, machine learning techniques can also be trained to detect and predict patterns in environmental and climatic data. 
+Each city can be viewed as a complex dynamic system generating vast amounts of heterogeneous data --- from weather stations, IoT sensors, and satellite imagery. 
+These measurements, such as temperature, rainfall, humidity, and air-pressure readings, can be represented as high-dimensional input vectors, analogous to the pixel intensities in an image. 
+The desired outputs, or target variables, might correspond to climate-related outcomes such as flood probability, heatwave intensity, or infrastructure stress levels. 
+Through the process of training and optimization, ML models learn the underlying relationships between these inputs and outputs, thereby enabling data-driven prediction and decision-making for urban resilience.
+
+From an engineering perspective, the implementation of such ML models requires the integration of heterogeneous data streams from multiple sources:
+\begin{itemize}
+    \item \textbf{Meteorological data:} temperature, precipitation, wind, humidity, and solar radiation.
+    \item \textbf{Hydrological data:} river levels, soil moisture, and drainage system capacity.
+    \item \textbf{Urban infrastructure sensors:} energy consumption, water usage, traffic flow, and air quality.
+\end{itemize}
+
+These datasets are pre-processed and fed into supervised learning models such as regression algorithms, random forests, or deep neural networks to predict extreme weather events or infrastructure performance. 
+The optimization principle described earlier --- minimizing a loss function \( L(\theta) \) --- is applied to tune model parameters based on historical data. 
+Once trained, the model can generalize to unseen conditions, making it suitable for real-time early-warning systems and adaptive resource management in Smart Cities.
+
+For example, deep learning models such as Long Short-Term Memory (LSTM) networks have been successfully applied to predict short-term rainfall intensity from time-series sensor data, enabling drainage systems to adjust flow capacity proactively \cite{kratzert2019towards}. 
+Similarly, convolutional neural networks (CNNs) are used for analyzing satellite imagery to identify flood-prone areas or urban heat islands \cite{rolnick2022tackling}. 
+These applications demonstrate how ML transforms static urban planning into adaptive, data-driven decision-making systems that enhance climate resilience \cite{mohanty2020ai,li2021sponge}.
+
 
 \section{Results}
 \lipsum[6-7]  % Results section
