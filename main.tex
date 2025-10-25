@@ -155,6 +155,7 @@ ML approaches are generally grouped into three categories:
     drainage management or smart grid operations.
 \end{enumerate}
 \subsection{Mathematical and Engineering Foundations of Machine Learning}
+\subsubsection{Pattern Recognition}
 In this section we will start by discussing pattern recognition, this has been a key role in enginering and today its used the most in data-science. 
 It involves identifying regularities and structures in data and its an important technique when the goal is to classify input data into predefined categories based on similar features.
 Multivariable calculus, linear algebra, probability theory, and statistics form the mathematical backbone of machine learning algorithms.\cite{bishop2006pattern}
@@ -177,9 +178,104 @@ within data and use these patterns to perform tasks such as classification or pr
 of handwritten digits (as shown in Figure 3.x), where each image of a digit can be represented as a 28×28 grid of pixel 
 intensities — forming a 784-dimensional input vector.
 
-The goal of the model is to map each input vector $x$ to its correct category, corresponding to one of the digits 0–9 (see Figure~\ref{fig:ml_example}). Rather than relying on handcrafted rules that describe the shapes of digits — which would be extremely complex and error-prone — machine learning methods instead learn these distinctions automatically from data.
+The goal of the model is to map each input vector $x$ to its correct category, corresponding to one of the digits 0–9 
+(see Figure~\ref{fig:ml_example}). Rather than relying on handcrafted rules that describe the shapes of digits — which 
+would be extremely complex and error-prone — machine learning methods instead learn these distinctions automatically from data.
 
-In this process, a training set of $N$ labeled examples $\{x_1, \dots, x_N\}$ is used to adjust the parameters of an adaptive model so that its predictions $y(x)$ approximate the true target labels $t$. Once trained, the model can correctly classify new, unseen images (the test set), demonstrating its ability to generalize beyond the data it was trained on — a key property of successful learning systems (Bishop, 2006).
+In this process, a training set of $N$ labeled examples $\{x_1, \dots, x_N\}$ is used to adjust the parameters of an 
+adaptive model so that its predictions $y(x)$ approximate the true target labels $t$. The precision and accuracy of this output function $y(x)$ is determined and improve during 
+\emph{training process} also called the \emph{learning phase}. Of course there comes always the need to for the preparation 
+of the original dataset, including tasks such as data cleaning, normalization, and augmentation before the actual training process.
+The right data representation form is very plays a core role in the success of the model. Once trained, the model can correctly 
+classify new, unseen images \emph{(the test set)}, demonstrating its ability to generalize beyond the data it was trained on — a 
+key property of successful learning systems (Bishop, 2006).
+
+\subsubsection{Learning Paradigms}
+
+The ability to recognize patterns and structures in data is one of the central goals of machine learning \cite{bishop2006pattern}. 
+Before a model can be trained, the raw data usually undergoes a \textbf{pre-processing} or \textbf{feature extraction} step. 
+This process aims to simplify the data by removing noise, reducing redundancy, and emphasizing the most relevant information.
+For instance, in image-based tasks such as handwritten digit recognition, each image is often resized and centered so that all digits share a similar position and scale. 
+Such normalization minimizes variability and makes it easier for algorithms to distinguish between categories. 
+In engineering contexts, similar preprocessing may involve standardizing sensor readings, normalizing units, or filtering out measurement noise to prepare the data for learning.
+
+Pre-processing also serves a practical purpose in reducing computational complexity. 
+In real-time systems such as video surveillance or autonomous monitoring, the amount of data generated can be extremely large. 
+Instead of feeding all raw pixels or raw sensor readings directly into the learning model, \textbf{feature extraction} methods are applied to derive informative yet compact input representations. 
+This represents a form of \textbf{dimensionality reduction}, as only a subset of the available information is retained — the part most relevant for the learning task.
+
+Figure~\ref{fig:pattern_example} illustrates the basic concept of a learning problem. 
+The blue circles represent individual observations of an input variable \(x\) and its corresponding target variable \(t\). 
+The smooth green curve represents the true but unknown function that generated the data. 
+The learning algorithm aims to infer this hidden relationship using only the observed data points, allowing it to make predictions for new, unseen inputs. 
+
+\subsubsection*{Polynomial Curve Fitting}
+
+To better understand the process of learning from data, we consider a simple regression problem that illustrates the fundamental ideas behind supervised learning \cite{bishop2006pattern}. 
+Assume that we observe a real-valued input variable \(x\) and wish to predict a corresponding real-valued output variable \(t\). 
+In practical applications, the true relationship between these quantities is typically unknown, and the observed data often contain random noise. 
+For illustration, synthetic data can be generated from a known underlying function, such as \(\sin(2\pi x)\), with added Gaussian noise to simulate natural variability. 
+This represents a realistic situation where data exhibit an underlying regularity that we aim to learn, while individual measurements are affected by random disturbances.
+
+Given a training set of \(N\) observed input--output pairs, denoted as 
+\[
+\mathcal{D} = \{ (x_1, t_1), (x_2, t_2), \dots, (x_N, t_N) \},
+\]
+our goal is to infer the underlying relationship between \(x\) and \(t\) so that predictions can be made for new inputs. 
+One common approach is to fit a \textbf{polynomial function} to the data, expressed as
+\[
+y(x, \mathbf{w}) = w_0 + w_1x + w_2x^2 + \dots + w_Mx^M = \sum_{j=0}^{M} w_j x^j,
+\]
+where \(M\) is the \textit{order} of the polynomial, and \(\mathbf{w} = (w_0, w_1, \dots, w_M)^{T}\) represents the set of coefficients. 
+Although the function \(y(x, \mathbf{w})\) is nonlinear with respect to the input variable \(x\), it is \textbf{linear in the parameters} \(\mathbf{w}\), and therefore belongs to the family of linear models.
+
+The parameters of the polynomial are determined by minimizing an \textit{error function} that quantifies the discrepancy between the predicted values \(y(x_n, \mathbf{w})\) and the observed target values \(t_n\) in the training data. 
+A widely used choice is the \textbf{sum-of-squares error function}, defined as
+\[
+E(\mathbf{w}) = \frac{1}{2} \sum_{n=1}^{N} \left\{ y(x_n, \mathbf{w}) - t_n \right\}^2.
+\]
+Minimizing this function with respect to \(\mathbf{w}\) yields the coefficients that best fit the polynomial to the data. 
+The factor of \(1/2\) is included for mathematical convenience, as it simplifies later derivative computations. 
+This process embodies the core concept of supervised learning: the model parameters are adjusted to reduce the difference between predictions and known targets, allowing the learned function to approximate the true underlying relationship.
+
+In the context of machine learning, this curve-fitting task highlights two critical aspects: 
+(1) the need to generalize from a limited number of training examples to unseen inputs, and 
+(2) the influence of model complexity \(M\) on the ability of the function to capture meaningful patterns without overfitting the noise in the data. 
+These concepts form the foundation for more advanced methods, including neural networks and other nonlinear models, which are explored in later sections.
+
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.75\textwidth]{images/pattern_example_1.png} % changed: correct path and filename (no backslash escapes)
+    \caption{Illustration of a supervised learning problem, where the model learns to approximate the underlying function from a limited number of observed data points. Own illustration, inspired by \cite{bishop2006pattern}.}
+    \label{fig:pattern_example}
+\end{figure}
+
+Depending on the type of data and the objective, machine learning problems can be categorized into three major paradigms \cite{bishop2006pattern}:
+
+\begin{itemize}
+    \item \textbf{Supervised Learning:}  
+    In this setting, both the input variables and their corresponding target outputs are known.  
+    The goal is to learn a mapping function that can predict the output for new inputs.  
+    Examples include \textit{classification} tasks (assigning data to discrete categories, such as identifying weather conditions as ``heatwave,'' ``normal,'' or ``storm'') and \textit{regression} tasks (predicting continuous values, such as temperature or rainfall).
+
+    \item \textbf{Unsupervised Learning:}  
+    Here, only the input data is available without any labels.  
+    The algorithm must find hidden patterns, clusters, or structures within the data.  
+    Common techniques include clustering and dimensionality reduction.  
+    Such methods are useful for identifying groups of cities with similar climate behavior or for detecting anomalies in environmental sensor networks.
+
+    \item \textbf{Reinforcement Learning (RL):}  
+    This approach is based on interaction between an agent and its environment.  
+    The agent learns by performing actions and receiving feedback in the form of rewards or penalties.  
+    The objective is to find a sequence of actions that maximizes the cumulative reward over time.  
+    Reinforcement learning is particularly well suited for dynamic decision-making problems such as adaptive traffic control, smart energy management, or water flow optimization in urban drainage systems \cite{sutton1998reinforcement}.
+\end{itemize}
+
+Although these paradigms differ in their data requirements and goals, they share the same mathematical foundation: the optimization of a performance measure or loss function. 
+Each algorithm seeks to generalize from observed data to unseen situations, which is crucial for building reliable and adaptive systems in real-world applications.
+
+
 
 \subsection{Linking Machine Learning to Climate-Resilient Urban Systems}
 
