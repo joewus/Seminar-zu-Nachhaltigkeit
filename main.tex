@@ -275,6 +275,176 @@ Depending on the type of data and the objective, machine learning problems can b
 Although these paradigms differ in their data requirements and goals, they share the same mathematical foundation: the optimization of a performance measure or loss function. 
 Each algorithm seeks to generalize from observed data to unseen situations, which is crucial for building reliable and adaptive systems in real-world applications.
 
+\subsection{Discrete Probability and Uncertainty}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.6\textwidth]{images/probability_boxes.png}
+    \caption{Illustration of the probability example using two boxes. 
+    The red box contains 2 apples (green) and 6 oranges (orange), 
+    while the blue box contains 3 apples and 1 orange. 
+    This example demonstrates the basic concept of random selection and conditional probability. 
+    Own illustration, inspired by \cite{bishop2006pattern}.}
+    \label{fig:fruit_boxes}
+\end{figure}
+
+One of the most important concepts in pattern recognition and machine learning is \textbf{uncertainty}. 
+Uncertainty arises naturally in almost all real-world systems due to two main factors: 
+(1) measurement noise and (2) limited data availability. 
+\textbf{Probability theory} provides a consistent mathematical framework to represent and quantify this uncertainty. 
+When combined with decision theory, probability allows us to make optimal predictions even when the available information is incomplete or ambiguous \cite{bishop2006pattern}.
+
+To introduce the fundamental ideas of probability, consider a simple thought experiment involving two boxes, one red and one blue. 
+The red box contains two apples and six oranges, while the blue box contains three apples and one orange. 
+Suppose we randomly choose one of the boxes and then select one piece of fruit from it. 
+After recording which fruit was selected, we return it to the same box and repeat this process many times.
+
+Let the random variable \( B \) represent the chosen box, where \( B = r \) corresponds to the red box and \( B = b \) to the blue box. 
+Similarly, let \( F \) denote the fruit type, where \( F = a \) represents an apple and \( F = o \) represents an orange. 
+If the red box is chosen 40\% of the time and the blue box 60\% of the time, we can express these probabilities as
+\[
+p(B = r) = 0.4, \qquad p(B = b) = 0.6.
+\]
+By definition, all probabilities lie in the interval \([0, 1]\) and must sum to one when representing mutually exclusive outcomes:
+\[
+p(B = r) + p(B = b) = 1.
+\]
+
+With these basic definitions, we can ask more interesting questions, such as:  
+“What is the overall probability of selecting an apple?” or  
+“Given that we picked an orange, what is the probability that it came from the blue box?”  
+Answering such questions requires two essential rules of probability — the \textbf{sum rule} and the \textbf{product rule}.
+
+To derive these, consider two general random variables \( X \) and \( Y \), each capable of taking discrete values \( x_i \) and \( y_j \), respectively. 
+If we perform \( N \) trials, and the number of occurrences of both \( X = x_i \) and \( Y = y_j \) is denoted by \( n_{ij} \), then the \textbf{joint probability} is defined as
+\[
+p(X = x_i, Y = y_j) = \frac{n_{ij}}{N}.
+\]
+Similarly, the probability of \( X = x_i \) regardless of the value of \( Y \) — known as the \textbf{marginal probability} — is
+\[
+p(X = x_i) = \frac{c_i}{N},
+\]
+where \( c_i = \sum_j n_{ij} \).
+These relationships form the basis for the sum rule:
+\[
+p(X = x_i) = \sum_j p(X = x_i, Y = y_j),
+\]
+and for the product rule, which expresses joint probability in terms of conditional probability:
+\[
+p(X, Y) = p(Y | X) p(X).
+\]
+Together, these two rules provide the mathematical foundation for more advanced probabilistic reasoning, including Bayesian inference.
+
+Understanding and applying these principles is important in machine learning, where uncertainty is an inherent part of data modeling. 
+For example, when predicting rainfall or temperature in a climate-resilient Smart City system, the measurements obtained from sensors are not exact but follow an underlying probability distribution due to random variations and environmental factors. 
+By representing uncertainty probabilistically, we can design models that reason about risk and make more robust, data-driven decisions in uncertain environments.
+
+
+\subsection{Probability Density for Continuous Variables}
+
+The examples discussed so far have involved discrete random variables, such as selecting a fruit or a box, where probabilities can be expressed as simple fractions of occurrences. 
+However, in most real-world engineering applications, the quantities of interest are continuous rather than discrete. 
+For instance, temperature, rainfall, or air pressure can take any value within a continuous range. 
+In such cases, the concept of probability is expressed not by individual probabilities but by a \textbf{probability density function (PDF)} \cite{bishop2006pattern}.
+
+For a continuous random variable \( x \), the probability of observing a value within a small interval \([x, x + \delta x]\) is given by
+\[
+p(x) \, \delta x,
+\]
+where \( p(x) \) is the probability density at point \( x \). 
+The density function satisfies the normalization condition
+\[
+\int_{-\infty}^{\infty} p(x) \, dx = 1,
+\]
+ensuring that the total probability over all possible outcomes equals one. 
+Unlike discrete probabilities, \( p(x) \) itself does not represent the probability of a specific value, since the probability of any exact point in a continuous range is zero. 
+Instead, the area under the curve of \( p(x) \) over an interval gives the probability of the variable falling within that range.
+
+A commonly used density function is the \textbf{Gaussian} or \textbf{normal distribution}, defined as
+\[
+p(x) = \frac{1}{\sqrt{2\pi\sigma^2}} \exp{\left(-\frac{(x - \mu)^2}{2\sigma^2}\right)},
+\]
+where \( \mu \) is the mean and \( \sigma^2 \) is the variance. 
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.7\textwidth]{images/pdf_continuous_density.png}
+    \caption{Example of a probability density function for a continuous variable. 
+    The shaded area indicates the probability of the variable falling within the interval \(a \le x \le b\).
+    Own illustration, inspired by \cite{bishop2006pattern}.}
+    \label{fig:pdf_example}
+\end{figure}
+
+
+This distribution is fundamental in machine learning because it models random measurement noise and forms the basis of many probabilistic learning algorithms.
+
+In the context of climate-resilient urban systems, continuous variables such as rainfall intensity or air temperature are naturally modeled using probability densities. 
+This enables the prediction of likely outcomes and their associated uncertainties, forming a key component of reliable decision-making in smart infrastructure and environmental monitoring.
+
+\section{Decision Making}
+
+In the previous sections, probability theory was introduced as a framework for representing and reasoning about uncertainty in data. 
+However, in many engineering systems, particularly those related to urban infrastructure and climate resilience, we must not only estimate probabilities but also make \textbf{optimal decisions} based on uncertain information. 
+\textbf{Decision theory}, when combined with probability, provides the mathematical foundation for choosing actions that minimize risk or cost in uncertain environments \cite{bishop2006pattern}.
+
+\subsection{Decision Theory and Classification}
+
+In general, we observe an input vector \( \mathbf{x} \) — for example, sensor readings from a weather or flood monitoring system — 
+and wish to predict an associated outcome \( t \). 
+In regression problems, \( t \) may represent a continuous variable such as predicted rainfall or temperature, while in classification 
+problems, \( t \) corresponds to discrete classes such as “flood risk,” “heatwave,” or “normal conditions.” 
+The joint probability distribution \( p(\mathbf{x}, t) \) expresses all uncertainty associated with these variables. 
+Once this distribution is estimated from data, decision theory provides a rule for selecting the most appropriate class or action.
+
+For instance, in an early-warning flood detection system, the input vector \( \mathbf{x} \) might contain real-time measurements 
+such as rainfall intensity, river level, and soil moisture. 
+Using Bayes’ theorem, we can compute the probability of each event (or class) given these observations:
+\[
+p(C_k | \mathbf{x}) = \frac{p(\mathbf{x} | C_k)\, p(C_k)}{p(\mathbf{x})}.
+\]
+Here, \( p(C_k) \) represents the prior likelihood of a flood or normal condition, and \( p(C_k | \mathbf{x}) \) is the updated (posterior) probability based on new sensor data. 
+To minimize classification errors, the optimal decision is to select the class with the highest posterior probability — 
+a rule known as the \textbf{maximum a posteriori (MAP)} criterion:
+\[
+\text{Choose class } C_k \text{ if } p(C_k | \mathbf{x}) > p(C_j | \mathbf{x}) \text{ for all } j \neq k.
+\]
+This principle underlies most AI-based alert systems, allowing them to classify conditions as safe or hazardous based on 
+probabilistic evidence.
+
+\subsection{Minimizing Expected Loss}
+
+In practice, not all mistakes have the same impact. 
+For example, triggering a false flood alarm may cause minor inconvenience, while failing to issue a warning when a flood 
+actually occurs could lead to major infrastructure damage or loss of life. 
+To account for this imbalance, decision theory introduces a \textbf{loss function} (or cost function) \( L_{kj} \), which 
+specifies the penalty for taking action \( j \) when the true state of the system is \( k \). 
+The objective is to minimize the \textbf{expected loss}, or average cost, over all possible outcomes:
+\[
+E[L] = \sum_{k} \sum_{j} \int_{R_j} L_{kj}\, p(\mathbf{x}, C_k)\, d\mathbf{x}.
+\]
+Each region \( R_j \) corresponds to a decision rule (for example, “issue alert” or “do nothing”). 
+The optimal strategy assigns each input \( \mathbf{x} \) to the decision that minimizes
+\[
+\sum_{k} L_{kj}\, p(C_k | \mathbf{x}),
+\]
+thus integrating the likelihood of events with their potential consequences.
+
+This concept generalizes the MAP rule by weighting different types of errors according to their severity. 
+In Smart City systems, this approach enables automated infrastructures — such as energy grids, drainage systems, 
+or emergency response networks — to balance trade-offs between false alarms and missed detections in a rational, data-driven manner.
+
+\subsection{Decision Theory in Climate-Resilient Smart Cities}
+
+Decision theory provides the final link between predictive machine learning models and actionable responses in climate-resilient 
+urban systems. 
+Whereas probability and inference quantify uncertainty, decision theory translates those uncertainties into concrete operational actions. 
+For instance, an intelligent drainage system may use ML-based rainfall forecasts to decide whether to open flood gates or store 
+excess water, while an adaptive power grid may decide how to redistribute load during extreme heat events. 
+In each case, the goal is not only to predict environmental changes but also to \textbf{minimize expected loss} — 
+in terms of infrastructure risk, resource inefficiency, or public safety — given uncertain information.
+
+By combining probability, learning, and decision theory, modern Smart City frameworks can make data-driven, context-aware, 
+and risk-optimized decisions, which are fundamental to enhancing urban climate resilience.
 
 
 \subsection{Linking Machine Learning to Climate-Resilient Urban Systems}
